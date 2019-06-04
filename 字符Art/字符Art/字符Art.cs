@@ -311,6 +311,7 @@ namespace 字符Art
 
 		// 虽然Char更符合，但双方都需要额外转换，故直接用String
 		// 来源：？
+		// ！其实字形是矢量图，应该可以直接通过ImageFile获取其亮度，且更合适
 		private Image 绘制图片_核心(String 源字符_输入, String 字体名_输入, Color 前景色_输入, Color 底色_输入)		// ！传递Bitmap对象实体还是文件路径待考虑
 		{
 			// 定义

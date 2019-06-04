@@ -537,12 +537,12 @@ namespace 字符Art
 		}
 		private Int32 Next(Int32 源数_输入) => 源数_输入 + 1;
 		//
-		public void 写入文件(StringBuilder 内容_输入, String 径_输入)		// ？考虑以Object代替，兼容不同类型，但图片似乎不能这么存，则余下的都是文本|类文本的，好像又没必要改Object了
+		public void 写入文件(StringBuilder 内容_输入, String 路径_输入)		// ？考虑以Object代替，兼容不同类型，但图片似乎不能这么存，则余下的都是文本|类文本的，好像又没必要改Object了
 																										// ？Object能否正常识别，仅靠文件格式
 		{
 			// ！未做合法性检测
 
-			StreamWriter 写入器 = new StreamWriter(new FileStream(径_输入, FileMode.Create), Encoding.UTF8);		// ！ASCII节约地方；UTF-8通用；UTF-32直接
+			StreamWriter 写入器 = new StreamWriter(new FileStream(路径_输入, FileMode.Create), Encoding.UTF8);		// ！ASCII节约地方；UTF-8通用；UTF-32直接
 
 			写入器.Write(内容_输入);
 

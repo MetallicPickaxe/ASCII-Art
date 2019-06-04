@@ -1,4 +1,3 @@
-# ASCII-Art
 [//]:# (Microsoft YaHei UI)
 
 ·泛·ASCII Art  
@@ -12,10 +11,10 @@
 ·样例：  
 //[来源](http://r0k.us/graphics/kodak)：Kodak发布，Rich  Franzen个人网站收藏  
 \-原图：
-![]()  
+![原图](https://github.com/MetallicPickaxe/ASCII-Art/blob/master/Read%20Me%E7%94%A8%E5%9B%BE/kodim19.png?raw=true)  
 \-整体直方图均衡化：  
 ![]()  
 \-原始生成结果：  
-![]()  
+![原始生成结果](https://github.com/MetallicPickaxe/ASCII-Art/blob/master/Read%20Me%E7%94%A8%E5%9B%BE/kodim19-%E5%AD%97%E7%AC%A6Art-1%E5%80%8D%E7%BC%A9%E6%94%BE.png?raw=true)  
 \-3倍压缩生成结果：  
-![]()  
+![3倍压缩生成结果](https://github.com/MetallicPickaxe/ASCII-Art/blob/master/Read%20Me%E7%94%A8%E5%9B%BE/kodim19-%E5%AD%97%E7%AC%A6Art-3%E5%80%8D%E7%BC%A9%E6%94%BE.png?raw=true)  

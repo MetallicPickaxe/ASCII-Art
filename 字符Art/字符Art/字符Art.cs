@@ -413,6 +413,111 @@ namespace 字符Art
 			return 目标图_输入_输出;
 		}
 
+		// 一般+的算法
+		// 灰度高占比的单项 → 多灰度阶层，即纵向改横向，即提高对比度，尽量更多突出各部分
+		// 主要面向色彩集中的图，可选
+		// 来源：？https://github.com/defineYIDA/picequalization
+		public Image 直方图均衡化(Image 源图_输入)		// ！待重构
+																				// ！3原色颜色分度的处理代码需要提取函数
+		{
+			Int64 像素空间 = 源图_输入.Width * 源图_输入.Height;
+			(Int32[] 红, Int32[] 绿, Int32[] 蓝) 亮度组 = (new Int32[像素深度], new Int32[像素深度], new Int32[像素深度]);
+			(Decimal[] 红, Decimal[] 绿, Decimal[] 蓝) 亮度密度组 = (new Decimal[像素深度], new Decimal[像素深度], new Decimal[像素深度]);
+			Bitmap 目标图_输出 = new Bitmap(源图_输入.Width, 源图_输入.Height);
+			(Decimal 红, Decimal 绿, Decimal 蓝) 容器 = default;
+			Color 像素 = default;
+			Point 坐标索引 = 原点;
+			Bitmap 源图 = new Bitmap(源图_输入);
+
+			// 〇始部分
+			for( ; 坐标索引.Y <= ZeroIndexed(源图_输入.Height); 坐标索引.Y++)
+			{
+				for(坐标索引.X = default; 坐标索引.X <= ZeroIndexed(源图_输入.Width); 坐标索引.X++)
+				{
+					像素 = 源图.GetPixel(坐标索引.X, 坐标索引.Y);
+
+					// 计算各颜色分度值的数量集
+					亮度组.红[像素.R]++;
+					亮度组.绿[像素.G]++;
+					亮度组.蓝[像素.B]++;
+				}
+			}
+
+			// 计算各颜色值的占比
+			for(Int32 索引 = default; 索引 <= ZeroIndexed(像素深度); 索引++)
+			{
+				亮度密度组.红[索引] = Decimal.Divide(亮度组.红[索引], 像素空间);
+				亮度密度组.绿[索引] = Decimal.Divide(亮度组.绿[索引], 像素空间);
+				亮度密度组.蓝[索引] = Decimal.Divide(亮度组.蓝[索引], 像素空间);
+			}
+
+			// 计算累积百分比
+			// ？哪个著名的变换来着
+			// ！不是一始，而是防止计算时下限越界，利用这种方法，化简了起始索引的计算：亮度密度组.XXX[default] += 0
+			for(Int32 索引 = Next(default); 索引 <= ZeroIndexed(像素深度); 索引++)
+			{
+				// 向前取，0-Indexed下1始，防止超过上限
+				亮度密度组.红[索引] += 亮度密度组.红[Previous(索引)];
+				亮度密度组.绿[索引] += 亮度密度组.绿[Previous(索引)];
+				亮度密度组.蓝[索引] += 亮度密度组.蓝[Previous(索引)];
+			}
+
+			for(坐标索引.Y = default; 坐标索引.Y <= ZeroIndexed(源图_输入.Height); 坐标索引.Y++)
+			{
+				for(坐标索引.X = default; 坐标索引.X <= ZeroIndexed(源图_输入.Width); 坐标索引.X++)
+				{
+					像素 = 源图.GetPixel(坐标索引.X, 坐标索引.Y);		// ！没有Point版本
+
+					容器.红 = 像素.R;
+					容器.绿 = 像素.G;
+					容器.蓝 = 像素.B;
+
+					if(容器.红 == default)
+					{
+						//容器.红 = default;		// 保持〇亮度映射得也是〇
+					}
+					else
+					{
+						// 容器.红 = 源亮度 × 累计百分比
+						容器.红 = 亮度密度组.红[Convert.ToInt32(Math.Round(容器.红))] * 像素深度;
+					}
+
+					if(容器.绿 == default)
+					{
+						//容器.绿 = default;		// 保持〇亮度映射得也是〇
+					}
+					else
+					{
+						// 容器.绿 = 源亮度 × 累计百分比
+						容器.绿 = 亮度密度组.绿[Convert.ToInt32(Math.Round(容器.绿))] * 像素深度;
+					}
+
+					if(容器.蓝 == default)
+					{
+						//容器.蓝 = default;		// 保持〇亮度映射得也是〇
+					}
+					else
+					{
+						// 容器.蓝 = 源亮度 × 累计百分比
+						容器.蓝 = 亮度密度组.蓝[Convert.ToInt32(Math.Round(容器.蓝))] * 像素深度;
+					}
+
+					像素 = Color.FromArgb(ZeroIndexed(Convert.ToInt32(容器.红)), ZeroIndexed(Convert.ToInt32(容器.绿)), ZeroIndexed(Convert.ToInt32(容器.蓝)));		// 此处可切换为执行灰度化
+
+					目标图_输出.SetPixel(坐标索引.X, 坐标索引.Y, 像素);		// 简化了对红色分度值、绿色分度值、蓝色分度值 = default的颜色的处理
+																									// ！使用BitmapData的性能更好
+																									// ！没有Point版本
+
+					// 终处理
+					容器 = default;		// 1代3，nice！
+				}
+			}
+
+			// 终处理
+			源图_输入.Dispose();
+
+			return 目标图_输出;
+		}
 		#region 工具
 		// 工具
 		private Int32 OneIndexed(Int32 ZeroIndexed_输入) => Next(ZeroIndexed_输入);

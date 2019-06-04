@@ -10,7 +10,7 @@
 
 ·样例：  
 //[来源](http://r0k.us/graphics/kodak)：Kodak发布，Rich  Franzen个人网站收藏  
-\-原图：
+\-原图：  
 ![原图](https://github.com/MetallicPickaxe/ASCII-Art/blob/master/Read%20Me%E7%94%A8%E5%9B%BE/kodim19.png?raw=true)  
 \-整体直方图均衡化：  
 ![]()  

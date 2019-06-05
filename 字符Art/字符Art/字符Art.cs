@@ -542,7 +542,7 @@ namespace 字符Art
 		{
 			// ！未做合法性检测
 
-			StreamWriter 写入器 = new StreamWriter(new FileStream(路径_输入, FileMode.Create), Encoding.UTF8);		// ！ASCII节约地方；UTF-8通用；UTF-32直接
+			StreamWriter 写入器 = new StreamWriter(new FileStream(路径_输入, FileMode.Create), Encoding.UTF8);		// ！ASCII节约地方；UTF-8通用；UTF-32|UCS-4直接
 
 			写入器.Write(内容_输入);
 

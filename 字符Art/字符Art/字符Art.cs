@@ -188,17 +188,16 @@ namespace 字符Art
 			Int32 长度 = 填充源_输入.Length;
 			Image 容器 = default;
 			Decimal 亮度容器 = default;
-			Char[] 填充字符组 = 填充源_输入.ToCharArray();
 			List<(Decimal 亮度, Char 字符)> 排序组 = new List<(Decimal 亮度, Char 字符)>();
 			StringBuilder 填充字符组_输出 = new StringBuilder();
 
-			for(Int32 索引 = default; 索引 <= ZeroIndexed(填充字符组.Length); 索引++)
+			for(Int32 索引 = default; 索引 <= ZeroIndexed(填充源_输入.Length); 索引++)
 			{
-				容器 = 绘制图片(填充字符组[索引].ToString());
+				容器 = 绘制图片(填充源_输入[索引].ToString());
 
 				//亮度值组[索引] = Convert.ToInt32(获取平均亮度(容器));
 				亮度容器 = 获取平均亮度(容器);
-				排序组.Add((亮度容器, 填充字符组[索引]));
+				排序组.Add((亮度容器, 填充源_输入[索引]));
 
 				// 终处理
 				容器.Dispose();
